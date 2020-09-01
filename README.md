@@ -1,5 +1,4 @@
 Scripts Python
-
 ==============
 
-This repository for all my personal Python Scripts.
+This repository its for all my personal Python Scripts.
