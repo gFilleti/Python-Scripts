@@ -1,4 +1,5 @@
 #!/usr/bin/env python3.8
+#!"C:\Python33\python.exe"
 
 import os # this module helps with delete,rename,move directory and much more
           #whid module provides a layer of abstraction Python and the OS
@@ -7,15 +8,49 @@ import os # this module helps with delete,rename,move directory and much more
           # as windowns cd ~\users..... linux cd ~/users... (one use \ other use /)
           #when using absolute path in our code we nned to make sure we can provide
           #alternatives  for the pçlataforms we want to support
+import pathlib
+
 
 def create():
-    directory_name = input("\nType the directory name:")
-    if os.path.exists(directory_name):#if directory exists the funcition will return True
-        print("\ndirectory already exists")
-        main()
+    ask = input(
+    "For a single or a branch type 1\n"
+    "For multiple chields directories type 2"
+    )
+
+    if ask == "1":
+
+        directory_name = input("\nType the directory(ies) name(s):")
+
+        if os.path.exists(directory_name):#if directory exists the funcition will return True
+            print("\ndirectory already exists")
+            refresh()
+        else:
+            pathlib.Path(directory_name).mkdir(parents=True, exist_ok=True)#create a new directory
+            print("\nThe directory {} was created\n".format(directory_name))
+            refresh()
     else:
-        os.mkdir(directory_name)#create a new directory
-        print("\nThe directory {} was created\n".format(directory_name))
+        ask = input(
+        "For enumereted in loop type 1\n"
+        "For choose the names type 2\n"
+        "type: "
+        )
+
+        if ask == "1":
+            parents = input("How many parents? ")
+
+            for p in range(1,int(parents)+1):
+                parent = input("\nWhats {}º the parent name: ".format(p))
+                pathlib.Path(parent).mkdir(parents=True, exist_ok=True)
+                chields = input("\nHow many chield in parent{}? ".format(p))
+                chield = input("\nWhats chields name: ")
+                os.chdir(parent)
+                for c in range(1,int(chields)+1):
+                    pathlib.Path(chield+str(c)).mkdir(parents=True, exist_ok=True)
+                os.chdir("..")
+        refresh()
+
+
+
 
 
 def delete():
@@ -25,6 +60,7 @@ def delete():
             dir = input("\nType directory name: ")
             os.rmdir(dir)#this function will only work if the directory is empty
             print("\nThe directory was deleted")
+            refresh()
         except:
 
             dir_content = os.listdir(dir)
@@ -39,7 +75,7 @@ def delete():
             else:
                 print("Theres no directory to be deleted")
 
-            main()
+            refresh()
 
 def rename():
     ask = input("\nWant rename the directory?(y/n): ")
@@ -49,9 +85,10 @@ def rename():
             rename = input("\nType the new directory name: ")
             os.rename(name, rename)#function will rename the directory
             print("\nThe directory was renamed by {}".format(rename))
+            refresh()
         except:
             print("\ndirectory dele_me was not renamed")
-            main()
+            refresh()
 
 def info_directory():
     try:
@@ -68,41 +105,52 @@ def info_directory():
         )
     except:
         print("\ndirectory doesnt exist")
-        main()
+        refresh()
 
 
 
 def main():
 
     while True:
-
-        choose = input(
+        try:
+            where = input("Choose start directory: ")
+            os.chdir(where)
+        except:
+            refresh()
+        ask = input(
         "\nType 1 for create a directory\n"
         "\nType 2 to delete the directory\n"
         "\nType 3 to rename the directory\n"
         "\nType 4 for check directory info\n"
         "\nType 5 for to exit\n"
         "\n"
+        "choose:"
         )
         try:
-            choose = int(choose)
+            ask = int(ask)
+            choose(ask)
         except:
-            choose = -1
+            refresh()
 
-        if choose == 1:
-            create()
 
-        elif choose == 2:
-            delete()
+def choose(number):
+    dict = {1: create, 2: delete, 3: rename, 4: info_directory}
+    dict[number]()
 
-        elif choose == 3:
-            rename()
-        elif choose == 4:
-            info_directory()
-        elif choose == 5:
-            quit()
+
+def refresh():
+    while True:
+        escolha = input("\nPress Y to continue the script\n"
+                            "Press anything else to exit:")
+
+        if escolha.strip().lower() == "y":
+            os.system('cls' if os.name == 'nt' else 'clear')
+            main()
+
         else:
-            print("Not a number")
+            os.system('cls' if os.name == 'nt' else 'clear')
+            quit()
+
 
 
 main()

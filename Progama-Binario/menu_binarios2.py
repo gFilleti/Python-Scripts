@@ -1,4 +1,4 @@
-import programa_binarios2
+import programa_binarios2 as bin
 
 
 def main():
@@ -16,38 +16,25 @@ def main():
     teste = True
 
     while teste:
-        
+
         if escolha == 1:
-            conversao = programa_binarios2.Conversao()
+            conversao = bin.Conversao()
             conversao.main()
-            
+
 
 
         elif escolha == 2:
-            tab_verdade = programa_binarios2.Tabela_Verdade()
+            tab_verdade = bin.Tabela_Verdade()
             tab_verdade.main()
 
         elif escolha == 3:
-            tipo_numerico = programa_binarios2.Tipo_Numerico()
+            tipo_numerico = bin.Tipo_Numerico()
             tipo_numerico.main()
 
 
         else:
             break
-    
-            
+
+
 
 main()
-        
-
-
-
-
-    
-
-
-                   
-
-    
-    
-    
